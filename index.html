@@ -2,254 +2,167 @@
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
-<title>Test interactiu</title>
+<title>Examen Antiga Grècia</title>
 
 <style>
-body {
+body{
   font-family: Arial;
-  background: #f4f6f8;
-  padding: 20px;
+  background: linear-gradient(to right,#d6eaf8,#ebf5fb);
+  padding:20px;
 }
 
-.quiz-container {
-  max-width: 800px;
-  margin: auto;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
+h1{text-align:center;}
+
+.page{
+  display:none;
+  max-width:900px;
+  margin:auto;
+  background:white;
+  padding:30px;
+  border-radius:15px;
+  box-shadow:0 0 10px rgba(0,0,0,0.2);
 }
 
-.option {
-  display: block;
-  margin: 5px 0;
-  padding: 10px;
-  background: #e0e0e0;
-  border-radius: 5px;
-  cursor: pointer;
+.page.active{display:block;}
+
+.option{
+  display:block;
+  padding:8px;
+  margin:5px 0;
+  cursor:pointer;
 }
 
-.correct { background: #4CAF50; color: white; }
-.wrong { background: #f44336; color: white; }
+.option:hover{background:#f0f0f0;}
 
-.word {
-  padding: 2px;
+.correct{color:green;font-weight:bold;}
+.incorrect{color:red;font-weight:bold;}
+
+button{
+  padding:8px 14px;
+  margin:5px;
+  border:none;
+  border-radius:6px;
+  background:#2e86c1;
+  color:white;
+  cursor:pointer;
 }
 
-.highlight {
-  background-color: lightblue;
-  text-decoration: underline;
+.progress{
+  height:10px;
+  background:#ddd;
+  margin-top:15px;
+  border-radius:10px;
 }
 
-button {
-  margin: 5px 5px 10px 0;
-  padding: 8px;
-  cursor: pointer;
+.bar{
+  height:100%;
+  width:0%;
+  background:#28b463;
 }
 </style>
 </head>
 
 <body>
 
-<div class="quiz-container">
+<h1>EXAMEN ANTIGA GRÈCIA</h1>
 
-<!-- PREGUNTA 1 -->
-<div class="question-block">
-  <p id="q1"></p>
+<!-- ===== PÀGINA 1 ===== -->
+<div class="page active" id="page1">
+<h2>INTRODUCCIÓ</h2>
 
-  <button onclick="speakFull('q1')">🔊 Llegir tot</button>
-  <button onclick="speakWordByWord('q1')">🔤 Paraula a paraula</button>
+<p>L'antiga Grècia va ser una civilització molt important.</p>
+<p>Van inventar la democràcia i van influir en la cultura actual.</p>
 
-  <div>
-    <span class="option" onclick="selectOption(this,false,'r1')">a) DORMIR</span>
-    <span class="option" onclick="selectOption(this,true,'r1')">b) NUTRICIÓ</span>
-    <span class="option" onclick="selectOption(this,false,'r1')">c) CÓRRER</span>
-  </div>
-  <p id="r1"></p>
+<div class="progress"><div class="bar"></div></div>
+
+<button onclick="goToPage(2)">Començar</button>
 </div>
 
-<!-- PREGUNTA 2 -->
-<div class="question-block">
-  <p id="q2"></p>
+<!-- ===== PÀGINA 2 ===== -->
+<div class="page" id="page2">
 
-  <button onclick="speakFull('q2')">🔊 Llegir tot</button>
-  <button onclick="speakWordByWord('q2')">🔤 Paraula a paraula</button>
+<h2>PREGUNTES</h2>
 
-  <div>
-    <span class="option" onclick="selectOption(this,false,'r2')">a) DORM TOT EL DIA</span>
-    <span class="option" onclick="selectOption(this,true,'r2')">b) NOTA EL QUE PASSA I RESPON</span>
-    <span class="option" onclick="selectOption(this,false,'r2')">c) NO FA RES</span>
-  </div>
-  <p id="r2"></p>
-</div>
-
-</div>
-
-<script>
-// TEXTOS
-const questions = {
-  q1: "1) QUINA ÉS UNA FUNCIÓ VITAL?",
-  q2: "2) QUÈ FA UN ÉSSER VIU QUAN ES RELACIONA?"
-};
-
-// CONVERTIR A PARAULES SEPARADES
-function renderText(id) {
-  const container = document.getElementById(id);
-  const words = questions[id].split(" ");
-
-  container.innerHTML = words
-    .map(word => `<span class="word">${word}</span>`)
-    .join(" ");
-}
-
-// LLEGIR TOT
-function speakFull(id) {
-  const text = questions[id];
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "ca-ES";
-  speechSynthesis.speak(utterance);
-}
-
-// LLEGIR PARAULA A PARAULA + SUBRATLLAT
-function speakWordByWord(id) {
-  const container = document.getElementById(id);
-  const words = container.querySelectorAll(".word");
-
-  let i = 0;
-
-  function speakNext() {
-    if (i > 0) words[i - 1].classList.remove("highlight");
-
-    if (i < words.length) {
-      const word = words[i];
-      word.classList.add("highlight");
-
-      const utterance = new SpeechSynthesisUtterance(word.innerText);
-      utterance.lang = "ca-ES";
-
-      utterance.onend = () => {
-        i++;
-        speakNext();
-      };
-
-      speechSynthesis.speak(utterance);
-    }
-  }
-
-  speakNext();
-}
-
-// OPCIONS
-function selectOption(el, correct, resultId) {
-  const siblings = el.parentElement.querySelectorAll(".option");
-  siblings.forEach(btn => btn.classList.remove("correct", "wrong"));
-
-  if (correct) {
-    el.classList.add("correct");
-    document.getElementById(resultId).innerText = "✔ Correcte!";
-  } else {
-    el.classList.add("wrong");
-    document.getElementById(resultId).innerText = "✘ Incorrecte";
-  }
-}
-
-// INIT
-renderText("q1");
-renderText("q2");
-</script>
-
-<!-- ===== APARTAT 1 ===== -->
-
-<p>1) QUINA ÉS UNA FUNCIÓ VITAL?</p>
+<p>1) ON ES TROBAVA LA CIVILITZACIÓ GREGA?</p>
 <div>
-<span class="option" onclick="selectOption(this,false,'r1')">a) DORMIR</span>
-<span class="option" onclick="selectOption(this,true,'r1')">b) NUTRICIÓ</span>
-<span class="option" onclick="selectOption(this,false,'r1')">c) CÓRRER</span>
+<span class="option" onclick="check(this,true,'r1')">a) Península Balcànica</span>
+<span class="option" onclick="check(this,false,'r1')">b) Àfrica</span>
+<span class="option" onclick="check(this,false,'r1')">c) Amèrica</span>
 </div>
 <p id="r1"></p>
 
-<p>2) QUÈ FA UN ÉSSER VIU QUAN ES RELACIONA?</p>
+<p>2) QUÈ ÉS UNA POLIS?</p>
 <div>
-<span class="option" onclick="selectOption(this,false,'r2')">a) DORM TOT EL DIA</span>
-<span class="option" onclick="selectOption(this,true,'r2')">b) NOTA EL QUE PASSA I RESPON</span>
-<span class="option" onclick="selectOption(this,false,'r2')">c) NO FA RES</span>
+<span class="option" onclick="check(this,true,'r2')">a) Ciutat-estat</span>
+<span class="option" onclick="check(this,false,'r2')">b) Un temple</span>
+<span class="option" onclick="check(this,false,'r2')">c) Un déu</span>
 </div>
 <p id="r2"></p>
 
+<div class="progress"><div class="bar"></div></div>
 
-<!-- ===== APARTAT 2 ===== -->
+<button onclick="goToPage(1)">Anterior</button>
+<button onclick="goToPage(3)">Següent</button>
 
-<p>1) UN BACTERI ÉS:</p>
-<div>
-<span class="option" onclick="selectOption(this,false,'r21')">a) PLURICEL·LULAR</span>
-<span class="option" onclick="selectOption(this,true,'r21')">b) UNICEL·LULAR</span>
-<span class="option" onclick="selectOption(this,false,'r21')">c) MINERAL</span>
 </div>
-<p id="r21"></p>
 
-<p>2) UN ELEFANT ÉS:</p>
+<!-- ===== PÀGINA 3 ===== -->
+<div class="page" id="page3">
+
+<h2>MÉS PREGUNTES</h2>
+
+<p>3) QUIN SISTEMA POLÍTIC VAN INVENTAR?</p>
 <div>
-<span class="option" onclick="selectOption(this,false,'r22')">a) UNICEL·LULAR</span>
-<span class="option" onclick="selectOption(this,true,'r22')">b) PLURICEL·LULAR</span>
-<span class="option" onclick="selectOption(this,false,'r22')">c) INVISIBLE</span>
+<span class="option" onclick="check(this,true,'r3')">a) Democràcia</span>
+<span class="option" onclick="check(this,false,'r3')">b) Dictadura</span>
+<span class="option" onclick="check(this,false,'r3')">c) Monarquia absoluta</span>
 </div>
-<p id="r22"></p>
+<p id="r3"></p>
 
-
-<!-- ===== APARTAT 3 ===== -->
-
-<p>1) LA CÈL·LULA ÉS:</p>
+<p>4) QUI EREN ELS DÉUS GRECS?</p>
 <div>
-<span class="option" onclick="selectOption(this,false,'r31')">a) UNA ROCA</span>
-<span class="option" onclick="selectOption(this,true,'r31')">b) LA PART MÉS PETITA D'UN ÉSSER VIU</span>
-<span class="option" onclick="selectOption(this,false,'r31')">c) UN ÒRGAN</span>
+<span class="option" onclick="check(this,false,'r4')">a) Reis</span>
+<span class="option" onclick="check(this,true,'r4')">b) Éssers mitològics</span>
+<span class="option" onclick="check(this,false,'r4')">c) Guerrers</span>
 </div>
-<p id="r31"></p>
+<p id="r4"></p>
 
-<p>2) TOTS ELS ÉSSERS VIUS ESTAN FORMATS PER:</p>
-<div>
-<span class="option" onclick="selectOption(this,false,'r32')">a) AIGUA</span>
-<span class="option" onclick="selectOption(this,false,'r32')">b) FUSTA</span>
-<span class="option" onclick="selectOption(this,true,'r32')">c) CÈL·LULES</span>
+<div class="progress"><div class="bar"></div></div>
+
+<button onclick="goToPage(2)">Anterior</button>
+<button onclick="goToPage(4)">Final</button>
+
 </div>
-<p id="r32"></p>
 
-
-<!-- ===== APARTAT 4 ===== -->
-
-<p>1) LA MEMBRANA SERVEIX PER:</p>
-<div>
-<span class="option" onclick="selectOption(this,true,'r41')">a) ENVOLTAR LA CÈL·LULA</span>
-<span class="option" onclick="selectOption(this,false,'r41')">b) FER FOTOSÍNTESI</span>
-<span class="option" onclick="selectOption(this,false,'r41')">c) RESPIRAR</span>
+<!-- ===== PÀGINA FINAL ===== -->
+<div class="page" id="page4">
+<h2>FINAL</h2>
+<p>Has acabat l'examen!</p>
+<button onclick="goToPage(1)">Tornar a començar</button>
 </div>
-<p id="r41"></p>
 
-<p>2) EL CITOPLASMA ÉS:</p>
-<div>
-<span class="option" onclick="selectOption(this,true,'r42')">a) EL LÍQUID INTERIOR</span>
-<span class="option" onclick="selectOption(this,false,'r42')">b) UNA PARET</span>
-<span class="option" onclick="selectOption(this,false,'r42')">c) UNA FULLA</span>
-</div>
-<p id="r42"></p>
+<script>
+let current=1;
 
+function goToPage(n){
+  document.getElementById("page"+current).classList.remove("active");
+  current=n;
+  document.getElementById("page"+current).classList.add("active");
+}
 
-<!-- ===== APARTAT 5 ===== -->
+function check(el,correct,id){
+  let options=el.parentNode.querySelectorAll(".option");
+  options.forEach(o=>o.style.fontWeight="normal");
 
-<p>1) QUIN ORGÀNUL FA RESPIRAR LA CÈL·LULA?</p>
-<div>
-<span class="option" onclick="selectOption(this,false,'r51')">a) CLOROPLAST</span>
-<span class="option" onclick="selectOption(this,true,'r51')">b) MITOCONDRI</span>
-<span class="option" onclick="selectOption(this,false,'r51')">c) MEMBRANA</span>
-</div>
-<p id="r51"></p>
+  el.style.fontWeight="bold";
 
-<p>2) QUIN ORGÀNUL FA LA FOTOSÍNTESI?</p>
-<div>
-<span class="option" onclick="selectOption(this,true,'r52')">a) CLOROPLAST</span>
-<span class="option" onclick="selectOption(this,false,'r52')">b) MITOCONDRI</span>
-<span class="option" onclick="selectOption(this,false,'r52')">c) CITOPLASMA</span>
-</div>
-<p id="r52"></p>
+  if(correct){
+    document.getElementById(id).innerHTML="<span class='correct'>Correcte</span>";
+  }else{
+    document.getElementById(id).innerHTML="<span class='incorrect'>Incorrecte</span>";
+  }
+}
+</script>
 
 </body>
 </html>
