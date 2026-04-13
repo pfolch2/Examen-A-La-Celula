@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <title>Test interactiu - Cèl·lula</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .quiz-container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .answers button {
+      display: block;
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #e0e0e0;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .answers button:hover {
+      background: #d0d0d0;
+    }
+
+    .correct {
+      background-color: #4CAF50 !important;
+      color: white;
+    }
+
+    .wrong {
+      background-color: #f44336 !important;
+      color: white;
+    }
+
+    .next-btn {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <h1>Test sobre la cèl·lula</h1>
+
+  <div id="quiz"></div>
+  <button class="next-btn" onclick="nextQuestion()">Següent</button>
+</div>
+
+<script>
+const quizData = [
+  {
+    question: "Quina és la unitat bàsica de la vida?",
+    audio: "audio/p1.mp3",
+    answers: [
+      {text: "El teixit", correct: false},
+      {text: "La cèl·lula", correct: true},
+      {text: "L'òrgan", correct: false},
+      {text: "El sistema", correct: false}
+    ]
+  },
+  {
+    question: "Quin orgànul controla la cèl·lula?",
+    audio: "audio/p2.mp3",
+    answers: [
+      {text: "Mitocondri", correct: false},
+      {text: "Nucli", correct: true},
+      {text: "Ribosoma", correct: false},
+      {text: "Membrana", correct: false}
+    ]
+  }
+];
+
+let currentQuestion = 0;
+
+function loadQuestion() {
+  const quiz = document.getElementById("quiz");
+  quiz.innerHTML = "";
+
+  const q = quizData[currentQuestion];
+
+  const questionEl = document.createElement("div");
+  questionEl.classList.add("question");
+  questionEl.innerHTML = `<h3>${q.question}</h3>`;
+
+  // AUDIO
+  if (q.audio) {
+    const audio = document.createElement("audio");
+    audio.controls = true;
+    audio.src = q.audio;
+    questionEl.appendChild(audio);
+  }
+
+  const answersEl = document.createElement("div");
+  answersEl.classList.add("answers");
+
+  q.answers.forEach(answer => {
+    const btn = document.createElement("button");
+    btn.innerText = answer.text;
+
+    btn.onclick = () => {
+      if (answer.correct) {
+        btn.classList.add("correct");
+      } else {
+        btn.classList.add("wrong");
+      }
+    };
+
+    answersEl.appendChild(btn);
+  });
+
+  quiz.appendChild(questionEl);
+  quiz.appendChild(answersEl);
+}
+
+function nextQuestion() {
+  currentQuestion++;
+  if (currentQuestion < quizData.length) {
+    loadQuestion();
+  } else {
+    document.getElementById("quiz").innerHTML = "<h2>Test acabat!</h2>";
+  }
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
