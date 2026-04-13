@@ -1,156 +1,160 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-  <meta charset="UTF-8">
-  <title>Test interactiu - Cèl·lula</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 20px;
-    }
+<meta charset="UTF-8">
+<title>Test interactiu</title>
 
-    h1 {
-      text-align: center;
-    }
+<style>
+body {
+  font-family: Arial;
+  background: #f4f6f8;
+  padding: 20px;
+}
 
-    .quiz-container {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
+.quiz-container {
+  max-width: 800px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
 
-    .question {
-      margin-bottom: 20px;
-    }
+.option {
+  display: block;
+  margin: 5px 0;
+  padding: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-    .answers button {
-      display: block;
-      width: 100%;
-      margin: 5px 0;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      background: #e0e0e0;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+.correct { background: #4CAF50; color: white; }
+.wrong { background: #f44336; color: white; }
 
-    .answers button:hover {
-      background: #d0d0d0;
-    }
+.word {
+  padding: 2px;
+}
 
-    .correct {
-      background-color: #4CAF50 !important;
-      color: white;
-    }
+.highlight {
+  background-color: lightblue;
+  text-decoration: underline;
+}
 
-    .wrong {
-      background-color: #f44336 !important;
-      color: white;
-    }
-
-    .next-btn {
-      margin-top: 20px;
-      padding: 10px;
-      width: 100%;
-      background: #2196F3;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  </style>
+button {
+  margin: 5px 5px 10px 0;
+  padding: 8px;
+  cursor: pointer;
+}
+</style>
 </head>
+
 <body>
 
 <div class="quiz-container">
-  <h1>Test sobre la cèl·lula</h1>
 
-  <div id="quiz"></div>
-  <button class="next-btn" onclick="nextQuestion()">Següent</button>
+<!-- PREGUNTA 1 -->
+<div class="question-block">
+  <p id="q1"></p>
+
+  <button onclick="speakFull('q1')">🔊 Llegir tot</button>
+  <button onclick="speakWordByWord('q1')">🔤 Paraula a paraula</button>
+
+  <div>
+    <span class="option" onclick="selectOption(this,false,'r1')">a) DORMIR</span>
+    <span class="option" onclick="selectOption(this,true,'r1')">b) NUTRICIÓ</span>
+    <span class="option" onclick="selectOption(this,false,'r1')">c) CÓRRER</span>
+  </div>
+  <p id="r1"></p>
+</div>
+
+<!-- PREGUNTA 2 -->
+<div class="question-block">
+  <p id="q2"></p>
+
+  <button onclick="speakFull('q2')">🔊 Llegir tot</button>
+  <button onclick="speakWordByWord('q2')">🔤 Paraula a paraula</button>
+
+  <div>
+    <span class="option" onclick="selectOption(this,false,'r2')">a) DORM TOT EL DIA</span>
+    <span class="option" onclick="selectOption(this,true,'r2')">b) NOTA EL QUE PASSA I RESPON</span>
+    <span class="option" onclick="selectOption(this,false,'r2')">c) NO FA RES</span>
+  </div>
+  <p id="r2"></p>
+</div>
+
 </div>
 
 <script>
-const quizData = [
-  {
-    question: "Quina és la unitat bàsica de la vida?",
-    audio: "audio/p1.mp3",
-    answers: [
-      {text: "El teixit", correct: false},
-      {text: "La cèl·lula", correct: true},
-      {text: "L'òrgan", correct: false},
-      {text: "El sistema", correct: false}
-    ]
-  },
-  {
-    question: "Quin orgànul controla la cèl·lula?",
-    audio: "audio/p2.mp3",
-    answers: [
-      {text: "Mitocondri", correct: false},
-      {text: "Nucli", correct: true},
-      {text: "Ribosoma", correct: false},
-      {text: "Membrana", correct: false}
-    ]
-  }
-];
+// TEXTOS
+const questions = {
+  q1: "1) QUINA ÉS UNA FUNCIÓ VITAL?",
+  q2: "2) QUÈ FA UN ÉSSER VIU QUAN ES RELACIONA?"
+};
 
-let currentQuestion = 0;
+// CONVERTIR A PARAULES SEPARADES
+function renderText(id) {
+  const container = document.getElementById(id);
+  const words = questions[id].split(" ");
 
-function loadQuestion() {
-  const quiz = document.getElementById("quiz");
-  quiz.innerHTML = "";
-
-  const q = quizData[currentQuestion];
-
-  const questionEl = document.createElement("div");
-  questionEl.classList.add("question");
-  questionEl.innerHTML = `<h3>${q.question}</h3>`;
-
-  // AUDIO
-  if (q.audio) {
-    const audio = document.createElement("audio");
-    audio.controls = true;
-    audio.src = q.audio;
-    questionEl.appendChild(audio);
-  }
-
-  const answersEl = document.createElement("div");
-  answersEl.classList.add("answers");
-
-  q.answers.forEach(answer => {
-    const btn = document.createElement("button");
-    btn.innerText = answer.text;
-
-    btn.onclick = () => {
-      if (answer.correct) {
-        btn.classList.add("correct");
-      } else {
-        btn.classList.add("wrong");
-      }
-    };
-
-    answersEl.appendChild(btn);
-  });
-
-  quiz.appendChild(questionEl);
-  quiz.appendChild(answersEl);
+  container.innerHTML = words
+    .map(word => `<span class="word">${word}</span>`)
+    .join(" ");
 }
 
-function nextQuestion() {
-  currentQuestion++;
-  if (currentQuestion < quizData.length) {
-    loadQuestion();
+// LLEGIR TOT
+function speakFull(id) {
+  const text = questions[id];
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "ca-ES";
+  speechSynthesis.speak(utterance);
+}
+
+// LLEGIR PARAULA A PARAULA + SUBRATLLAT
+function speakWordByWord(id) {
+  const container = document.getElementById(id);
+  const words = container.querySelectorAll(".word");
+
+  let i = 0;
+
+  function speakNext() {
+    if (i > 0) words[i - 1].classList.remove("highlight");
+
+    if (i < words.length) {
+      const word = words[i];
+      word.classList.add("highlight");
+
+      const utterance = new SpeechSynthesisUtterance(word.innerText);
+      utterance.lang = "ca-ES";
+
+      utterance.onend = () => {
+        i++;
+        speakNext();
+      };
+
+      speechSynthesis.speak(utterance);
+    }
+  }
+
+  speakNext();
+}
+
+// OPCIONS
+function selectOption(el, correct, resultId) {
+  const siblings = el.parentElement.querySelectorAll(".option");
+  siblings.forEach(btn => btn.classList.remove("correct", "wrong"));
+
+  if (correct) {
+    el.classList.add("correct");
+    document.getElementById(resultId).innerText = "✔ Correcte!";
   } else {
-    document.getElementById("quiz").innerHTML = "<h2>Test acabat!</h2>";
+    el.classList.add("wrong");
+    document.getElementById(resultId).innerText = "✘ Incorrecte";
   }
 }
 
-loadQuestion();
+// INIT
+renderText("q1");
+renderText("q2");
 </script>
 
 </body>
