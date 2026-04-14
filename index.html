@@ -233,14 +233,14 @@
   <div class="wrap">
     <header>
       <div class="titleRow">
-        <h1 id="titleText">EXAMEN DE LA ANTIGUA GRECIA Y LAS OLIMPIADAS</h1>
+        <h1 id="titleText">EXÀMEN DE LA CÈL·LULA</h1>
         <div class="smallBtns">
-          <button class="btn mini" id="titlePlay" type="button" aria-label="LEER TÍTULO NORMAL">▶</button>
-          <button class="btn mini" id="titleTurtle" type="button" aria-pressed="false" aria-label="LEER TÍTULO LENTO">🐢</button>
+          <button class="btn mini" id="titlePlay" type="button" aria-label="LLEGIR TÍTOL NORMAL">▶</button>
+          <button class="btn mini" id="titleTurtle" type="button" aria-pressed="false" aria-label="LLEGIR TÍTOL LENT">🐢</button>
         </div>
       </div>
       <div class="hint">
-        CADA TEXTO TIENE SU ▶ NORMAL Y SU 🐢 LENTO. SI PULSAS 🐢 OTRA VEZ, SE PARA. EL TEXTO NO CAMBIA.
+        CADA TEXT TÉ EL SEU ▶ NORMAL I EL SEU 🐢 LENT. SI PULSAS 🐢 UNA ALTRA VEGADA, ES PARA. EL TEXT NO CANVIA.
       </div>
     </header>
 
@@ -248,9 +248,9 @@
       <div id="questions"></div>
 
       <div class="footerBar">
-        <button class="btn primary" id="gradePlay" type="button" aria-label="LEER CORREGIR Y NOTA NORMAL">▶ LEER</button>
-        <button class="btn primary" id="gradeTurtle" type="button" aria-pressed="false" aria-label="LEER CORREGIR Y NOTA LENTO">🐢 LENTO</button>
-        <button class="btn primary" id="gradeBtn" type="button">CORREGIR Y NOTA</button>
+        <button class="btn primary" id="gradePlay" type="button" aria-label="LLEGIR CORREGIR I NOTA NORMAL">▶ LLEGIR</button>
+        <button class="btn primary" id="gradeTurtle" type="button" aria-pressed="false" aria-label="LLEGIR CORREGIR I NOTA LENT">🐢 LENT</button>
+        <button class="btn primary" id="gradeBtn" type="button">CORREGIR I NOTA</button>
       </div>
       <div class="note" id="warn"></div>
     </main>
@@ -281,7 +281,7 @@
     // DATA (SOLO TU CONTENIDO)
     // -----------------------------
     const QUESTIONS = [
-      { id: 1,  q: "QUINA ÉS UNA FUNCIÓ VITAL?",
+      { id: 1,  q: "QUINA ÉS UNA FUNCIÓ VITAL D'UN ÉSSER VIU?",
         opts: { A:"NUTRICIÓ", B:"DORMIR", C:"CÓRRER" }, correct: "A"
       },
       { id: 2,  q: "QUÈ ÉS UN BACTERI?",
@@ -334,7 +334,7 @@
     const state = {
       selected: new Map(), // qid -> 'A'|'B'|'C'
       slowJob: null,
-      resultSpeechText: "TU NOTA ES… 0,0 / 10"
+      resultSpeechText: "LA TEVA NOTA ÉS… 0,0 / 10"
     };
 
     // -----------------------------
