@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>EXAMEN DE LA ANTIGUA GRECIA Y LAS OLIMPIADAS</title>
+  <title>EXÀMEN DE LA CÈL·LULA</title>
 
   <!-- PDF (OPCIÓN B): jsPDF -->
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
@@ -265,9 +265,9 @@
         <div class="grade" id="resultGrade">0,0 / 10</div>
 
         <div style="margin-top:14px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-          <button class="btn primary" id="pdfPlay" type="button" aria-label="LEER DESCARGAR PDF NORMAL">▶ LEER</button>
-          <button class="btn primary" id="pdfTurtle" type="button" aria-pressed="false" aria-label="LEER DESCARGAR PDF LENTO">🐢 LENTO</button>
-          <button class="btn primary" id="pdfBtn" type="button">DESCARGAR PDF</button>
+          <button class="btn primary" id="pdfPlay" type="button" aria-label="LLEGIR DESCARREGAR PDF NORMAL">▶ LLEGIR</button>
+          <button class="btn primary" id="pdfTurtle" type="button" aria-pressed="false" aria-label="LLEGIR DESCARREGAR PDF LENT">🐢 LENT</button>
+          <button class="btn primary" id="pdfBtn" type="button">DESCARREGAR PDF</button>
         </div>
       </div>
 
@@ -607,7 +607,7 @@ function getCatalanVoice(){
       const margin = 44;
       const maxW = pageW - margin * 2;
 
-      const title = "EXAMEN DE LA ANTIGUA GRECIA Y LAS OLIMPIADAS";
+      const title = "EXÀMEN DE LA CÈL·LULA";
       const when = new Date().toLocaleString("es-ES").toUpperCase();
 
       let y = margin;
@@ -654,7 +654,7 @@ function getCatalanVoice(){
         y += 10;
       });
 
-      doc.save("EXAMEN_ANTIGUA_GRECIA_Y_OLIMPIADAS.pdf");
+      doc.save("EXAMEN_CELULA.pdf");
     }
 
     // -----------------------------
@@ -793,7 +793,7 @@ function getCatalanVoice(){
         });
       }
 
-      document.getElementById("backNote").textContent = "SI QUIERES REPETIR, RECARGA LA PÁGINA.";
+      document.getElementById("backNote").textContent = "SI VOLS REPETIR, TORNA A CARREGAR LA PÀGINA.";
     }
 
     // -----------------------------
@@ -822,7 +822,7 @@ function getCatalanVoice(){
         const ok = ensureAllAnswered();
         const warn = document.getElementById("warn");
         if (!ok){
-          const msg = "FALTAN PREGUNTAS SIN RESPONDER. RESPONDE TODAS ANTES DE CORREGIR.";
+          const msg = "FALTEN PREGUNTES PER RESPONDRE, RESPONT-LES TOTES ABANS DE CORREGIR.";
           warn.textContent = msg;
           speakNormal(msg);
           return;
