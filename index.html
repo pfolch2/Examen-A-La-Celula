@@ -363,20 +363,29 @@
       document.querySelectorAll(".ttsActive").forEach(el => el.classList.remove("ttsActive"));
     }
 
-    function getSpanishVoice(){
-      const voices = window.speechSynthesis.getVoices?.() || [];
-      const es = voices.filter(v => (v.lang || "").toLowerCase().startsWith("es"));
-      const esES = es.find(v => (v.lang || "").toLowerCase() === "es-es");
-      return esES || es[0] || voices[0] || null;
-    }
+function getCatalanVoice(){
+  const voices = window.speechSynthesis.getVoices?.() || [];
 
+  // buscar veus catalanes
+  const ca = voices.filter(v =>
+    (v.lang || "").toLowerCase().startsWith("ca")
+  );
+
+  // prioritzar ca-ES exacta
+  const caES = ca.find(v =>
+    (v.lang || "").toLowerCase() === "ca-es"
+  );
+
+  return caES || ca[0] || voices[0] || null;
+}
+    
     function speakNormal(text){
       if (!supportsSpeech()) return;
       stopAllSpeech();
       const u = new SpeechSynthesisUtterance(normalizeTextForSpeech(text));
-      const v = getSpanishVoice();
+      const v = getCatalanVoice();
       if (v) u.voice = v;
-      u.lang = (v && v.lang) ? v.lang : "es-ES";
+      u.lang = (v && v.lang) ? v.lang : "ca-ES";
       u.rate = 1.0;
       u.pitch = 1.0;
       u.volume = 1.0;
@@ -392,8 +401,8 @@
       const raw = normalizeTextForSpeech(text);
       const words = raw.split(" ");
 
-      const v = getSpanishVoice();
-      const lang = (v && v.lang) ? v.lang : "es-ES";
+      const v = getCatalanVoice();
+      const lang = (v && v.lang) ? v.lang : "ca-ES";
 
       // SOLO RESALTA EL BLOQUE ENTERO (SIN CAMBIAR INNERHTML)
       if (targetEl) targetEl.classList.add("ttsActive");
